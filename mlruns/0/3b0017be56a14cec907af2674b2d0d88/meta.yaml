@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/iKILL/Github/MLOpsProject/mlruns/0/3b0017be56a14cec907af2674b2d0d88/artifacts
+end_time: 1735550695485
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 3b0017be56a14cec907af2674b2d0d88
+run_name: lyrical-shoat-852
+run_uuid: 3b0017be56a14cec907af2674b2d0d88
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1735550525853
+status: 3
+tags: []
+user_id: iKILL
