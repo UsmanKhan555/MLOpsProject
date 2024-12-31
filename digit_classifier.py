@@ -7,7 +7,6 @@ from flask import Flask, request, render_template, jsonify
 from PIL import Image
 import os
 
-# Neural Network Model Definition
 class SimpleNN(nn.Module):
     def __init__(self):
         super(SimpleNN, self).__init__()
@@ -44,9 +43,8 @@ class DigitClassifier:
             transforms.Normalize((0.5,), (0.5,))
         ])
         
-        # Load model if exists, otherwise train
         if os.path.exists(model_path):
-            self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+            self.model.load_state_dict(torch.load(model_path, map_location=self.device, weights_only=True))
             print(f"Loaded existing model from {model_path}")
         else:
             print("No existing model found. Training new model...")
@@ -55,12 +53,11 @@ class DigitClassifier:
         self.model.eval()
 
     def train_model(self):
-        # Training settings
+        # Training code remains the same
         batch_size = 64
         epochs = 5
         learning_rate = 0.001
 
-        # Data loading
         train_dataset = datasets.MNIST(root='./data', train=True,
                                      transform=transforms.Compose([
                                          transforms.ToTensor(),
@@ -78,11 +75,9 @@ class DigitClassifier:
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
 
-        # Training setup
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
-        # Training loop
         for epoch in range(1, epochs + 1):
             self.model.train()
             for batch_idx, (data, target) in enumerate(train_loader):
@@ -97,7 +92,6 @@ class DigitClassifier:
                     print(f'Train Epoch: {epoch} [{batch_idx * len(data)}/{len(train_loader.dataset)} '
                           f'({100. * batch_idx / len(train_loader):.0f}%)]\tLoss: {loss.item():.6f}')
 
-            # Test after each epoch
             self.model.eval()
             test_loss = 0
             correct = 0
@@ -114,12 +108,10 @@ class DigitClassifier:
             print(f'Test set: Average loss: {test_loss:.4f}, '
                   f'Accuracy: {correct}/{len(test_loader.dataset)} ({accuracy:.2f}%)')
 
-        # Save the trained model
         torch.save(self.model.state_dict(), self.model_path)
         print(f"Model saved to {self.model_path}")
 
     def predict(self, image):
-        """Predict digit from image"""
         try:
             img = self.transform(image).unsqueeze(0).to(self.device)
             with torch.no_grad():
@@ -130,9 +122,17 @@ class DigitClassifier:
             print(f"Error in prediction: {str(e)}")
             raise e
 
-# Flask Application
+# Flask application
 app = Flask(__name__)
-classifier = None
+
+# Create global classifier instance
+_classifier = None
+
+def get_classifier():
+    global _classifier
+    if _classifier is None:
+        _classifier = DigitClassifier()
+    return _classifier
 
 @app.route('/')
 def index():
@@ -167,23 +167,22 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No file selected"}), 400
-
     try:
+        if 'file' not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"error": "No file selected"}), 400
+
+        classifier = get_classifier()
         img = Image.open(file).convert('L')
         predicted_digit = classifier.predict(img)
         return jsonify({"digit": predicted_digit})
     except Exception as e:
+        print(f"Error in prediction: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Initialize the classifier
-    classifier = DigitClassifier()
-    
-    # Run the Flask app
+    _classifier = DigitClassifier()
     app.run(debug=True)
