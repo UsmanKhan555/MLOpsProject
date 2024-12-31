@@ -35,5 +35,14 @@ pipeline {
             }
         }
 
+         stage('Docker Build') {
+            steps {
+                script {
+                    echo 'Building Docker image'
+                    sh 'docker build -t my-docker-image:latest .'
+                }
+            }ds
+        }
+
     }
 }
