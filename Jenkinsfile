@@ -15,7 +15,6 @@ pipeline {
             steps {
                 script {
                     sh "python -m pip install --upgrade pip --break-system-packages"
-                    sh "python -m pip install pytest --break-system-packages"
                     sh "python -m pip install --break-system-packages -r requirements.txt"
                 }
             }
