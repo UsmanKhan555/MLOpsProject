@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image'
-                    def dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest")
+                    dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest")
                 }
             }
         }
