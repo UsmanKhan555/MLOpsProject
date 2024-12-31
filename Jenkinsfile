@@ -16,7 +16,7 @@ pipeline {
                 script {
                     echo 'Installing dependencies'
                     // Install dependencies, including pytest
-                    sh "python3 -m pip install --upgrade pip"
+                    sh "python3 -m pip install --break-system-packages --upgrade pip"
                     sh "python3 -m pip install --break-system-packages -r requirements.txt"
                 }
             }
