@@ -44,5 +44,14 @@ pipeline {
             }
         }
 
+        stage('Trivy Docker Image scan'){
+            steps {
+                script {
+                    echo "Running Trivy Docker Image Scan"
+                    sh "trivy image mlopsapp:latest --format table -o trivy-image-report.html"
+                }
+            }
+        }
+
     }
 }
