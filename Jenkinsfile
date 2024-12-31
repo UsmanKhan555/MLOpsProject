@@ -27,5 +27,13 @@ pipeline {
                 }
             }
         }
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    echo "Running Trivy Scan"
+                    sh "trivy fs --format table -o trivy-fs-report.html"
+                }
+            }
+        }
     }
 }
