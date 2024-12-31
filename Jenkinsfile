@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     echo 'Testing the code'
-                    sh "python -m pip install -r requirements.txt"
+                    sh "python -m pip install --break-system-packages -r requirements.txt"
                 }
             }
         }
