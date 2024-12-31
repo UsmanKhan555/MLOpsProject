@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        DOCKER_IMAGE = "mlopsproject"
+    }
     stages {
         stage('Clone repository') {
             steps {
@@ -40,7 +42,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker Image"
-                    docker.build("mlopsproject")
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
