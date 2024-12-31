@@ -19,13 +19,13 @@ pipeline {
             }
         }
 
-        // stage('Test') {
-        //     steps {
-        //         script {
-        //             sh "python -m pytest test_app.py"
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                script {
+                    sh "python -m pytest test_app.py"
+                }
+            }
+        }
         // stage('Trivy Scan') {
         //     steps {
         //         script {
