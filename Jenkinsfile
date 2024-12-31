@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     echo "Running Trivy Scan"
-                    sh "trivy fs --format table -o trivy-fs-report.html ."
+                    sh "trivy fs --format table -o trivy-fs-report.html"
                 }
             }
         }
