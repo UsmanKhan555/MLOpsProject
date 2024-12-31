@@ -12,14 +12,22 @@ pipeline {
             }
         }
 
-        stage('Test'){
+        stage('Check out the code') {
             steps {
                 script {
-                    echo 'Testing the code'
+                    echo 'Checking out the code'
                     sh "python -m pip install --break-system-packages -r requirements.txt"
                 }
             }
         }
+
+        stage('Test the code') {
+            steps {
+                script {
+                    echo 'Testing the code'
+                    sh "pytest test_app.py" 
+                }
+            }
 
 
     }
