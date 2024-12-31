@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo 'Testing the code'
-                    sh "pytest" 
+                    sh "pytest test_app.py" 
                 }
             }
         }
