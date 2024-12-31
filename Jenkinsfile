@@ -5,19 +5,18 @@ pipeline {
         stage('Clone repository') {
             steps {
                 script {
+                    // Cloning the Repository to our workspace
                     echo 'Cloning the Repository to our workspace'
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'mlops_git_token', url: 'https://github.com/UsmanKhan555/MLOpsProject.git']])
                 }
             }
         }
 
-        stage('Install dependencies') {
+        stage('Check out the code') {
             steps {
                 script {
-                    echo 'Installing dependencies'
-                    // Install dependencies, including pytest
-                    sh "python3 -m pip install --break-system-packages --upgrade pip"
-                    sh "python3 -m pip install --break-system-packages -r requirements.txt"
+                    echo 'Checking out the code'
+                    sh "python -m pip install --break-system-packages -r requirements.txt"
                 }
             }
         }
@@ -25,12 +24,10 @@ pipeline {
         stage('Test the code') {
             steps {
                 script {
-                    echo 'Running tests with pytest'
-                    // Run tests using pytest
-                    sh "pytest test_app.py"
+                    echo 'Testing the code'
+                    sh "pytest test_app.py" 
                 }
             }
         }
     }
-
 }
