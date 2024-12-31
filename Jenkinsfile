@@ -13,9 +13,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh "python --version"
-                    // sh "python -m pip install --upgrade pip --break-system-packages"
-                    // sh "python -m pip install --break-system-packages -r requirements.txt"
+                    sh "python -m pip install --upgrade pip --break-system-packages"
+                    sh "python -m pip install --break-system-packages -r requirements.txt"
                 }
             }
         }
