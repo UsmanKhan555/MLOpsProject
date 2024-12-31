@@ -33,6 +33,7 @@ pipeline {
                 }
             }
         }
+
         stage('Trivy Scan') {
             steps {
                 script {
@@ -46,30 +47,30 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image'
-                    dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest")
+                    def dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest")
                 }
             }
         }
 
-        stage('Trivy Docker Image scan'){
+        stage('Trivy Docker Image scan') {
             steps {
                 script {
                     echo "Running Trivy Docker Image Scan"
-                    sh "trivy image --format table -o trivy-image-report.html "${DOCKERHUB_REPOSITORY}:latest""
+                    sh "trivy image --format table -o trivy-image-report.html ${DOCKERHUB_REPOSITORY}:latest"
                 }
             }
         }
 
-        stage('Push Docker Image'){
+        stage('Push Docker Image') {
             steps {
                 script {
                     echo 'Pushing Docker image to Docker Hub'
-                    docker.withRegistry('{$DOCKERHUB_REGISTRY}', '${DOCKER_HUB_CREDENTIAL_ID}') {
+                    docker.withRegistry("${DOCKERHUB_REGISTRY}", "${DOCKER_HUB_CREDENTIAL_ID}") {
                         dockerImage.push('latest')
                     }
                 }
             }
         }
-
     }
+
 }
