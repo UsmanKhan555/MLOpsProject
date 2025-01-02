@@ -3,3 +3,4 @@ torchvision
 flask
 pillow
 pytest
+gunicorn
