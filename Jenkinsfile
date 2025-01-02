@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     echo "Running Trivy Docker Image Scan"
-                    sh "trivy image --format table -o trivy-image-report.html ${DOCKERHUB_REPOSITORY}:latest"
+                    sh "trivy image ${DOCKERHUB_REPOSITORY}:latest --format table -o trivy-image-report.html"
                 }
             }
         }
