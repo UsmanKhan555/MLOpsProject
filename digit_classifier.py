@@ -185,4 +185,4 @@ def predict():
 
 if __name__ == '__main__':
     _classifier = DigitClassifier()
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
