@@ -142,7 +142,7 @@ def index():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Digit Classifier</title>
+        <title>Digit Classifier ML</title>
         <style>
             body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
             .container { text-align: center; }
