@@ -76,6 +76,10 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying the application'
+                     // Fetch the deploy hook URL securely and use it to trigger a deploy
+                    withCredentials([string(credentialsId: 'render-deploy', variable: 'DEPLOY_HOOK_URL')]) {
+                        sh 'curl -X POST $DEPLOY_HOOK_URL'
+                    }
                 }
             }
         }
